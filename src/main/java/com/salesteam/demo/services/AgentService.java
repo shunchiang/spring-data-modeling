@@ -1,5 +1,7 @@
 package com.salesteam.demo.services;
 
-public interface AgentService {
+import com.salesteam.demo.models.Agent;
 
+public interface AgentService {
+    Agent save(Agent agent);
 }

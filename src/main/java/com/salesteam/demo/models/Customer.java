@@ -32,6 +32,9 @@ public class Customer {
     @JsonIgnoreProperties(value="customers", allowSetters = true)
     private Agent agent;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
     public Customer() {
     }
 
@@ -49,8 +52,6 @@ public class Customer {
         this.agent = agent;
     }
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
 
     public long getCustcode() {
         return custcode;
