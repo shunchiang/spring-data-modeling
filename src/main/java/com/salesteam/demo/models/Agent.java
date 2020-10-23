@@ -14,8 +14,7 @@ public class Agent {
 
     private String agentname;
     private String workingarea;
-    @Column(unique = true)
-    private double comission;
+    private double commission;
     private String phone;
     private String country;
 
@@ -26,10 +25,10 @@ public class Agent {
     public Agent() {
     }
 
-    public Agent(String agentname, String workingarea, double comission, String phone, String country) {
+    public Agent(String agentname, String workingarea, double commission, String phone, String country) {
         this.agentname = agentname;
         this.workingarea = workingarea;
-        this.comission = comission;
+        this.commission = commission;
         this.phone = phone;
         this.country = country;
     }
@@ -59,11 +58,11 @@ public class Agent {
     }
 
     public double getComission() {
-        return comission;
+        return commission;
     }
 
     public void setComission(double comission) {
-        this.comission = comission;
+        this.commission = comission;
     }
 
     public String getPhone() {

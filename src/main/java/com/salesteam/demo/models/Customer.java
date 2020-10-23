@@ -3,6 +3,8 @@ package com.salesteam.demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="customers")
@@ -46,6 +48,9 @@ public class Customer {
         this.phone = phone;
         this.agent = agent;
     }
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
 
     public long getCustcode() {
         return custcode;
@@ -141,5 +146,13 @@ public class Customer {
 
     public void setAgent(Agent agent) {
         this.agent = agent;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

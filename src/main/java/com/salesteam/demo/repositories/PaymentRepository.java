@@ -1,4 +1,7 @@
 package com.salesteam.demo.repositories;
 
-public interface PaymentRepository {
+import com.salesteam.demo.models.Payment;
+import org.springframework.data.repository.CrudRepository;
+
+public interface PaymentRepository extends CrudRepository<Payment,Long> {
 }
