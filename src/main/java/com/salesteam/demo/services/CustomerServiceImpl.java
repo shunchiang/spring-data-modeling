@@ -5,6 +5,9 @@ import com.salesteam.demo.repositories.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service(value="customerService")
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
@@ -14,4 +17,10 @@ public class CustomerServiceImpl implements CustomerService {
         return custrepos.save(customer);
     }
 
+    @Override
+    public List<Customer> findAllOrders() {
+        List<Customer> list = new ArrayList<>();
+        custrepos.findAll().iterator().forEachRemaining(list::add);
+        return list;
+    }
 }

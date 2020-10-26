@@ -5,13 +5,23 @@ import com.salesteam.demo.repositories.AgentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service(value = "agentService")
 public class AgentServiceImpl implements AgentService {
     @Autowired
-    AgentsRepository restrepos;
+    private AgentsRepository agentrepos;
+
+    @Override
+    public List<Agent> findAllAgents() {
+        List <Agent> list = new ArrayList<>();
+        agentrepos.findAll().iterator().forEachRemaining(list::add);
+        return list;
+    }
 
     @Override
     public Agent save(Agent agent){
-        return restrepos.save(agent);
+        return agentrepos.save(agent);
     }
 }
