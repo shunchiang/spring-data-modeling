@@ -5,6 +5,7 @@ import com.salesteam.demo.repositories.AgentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,5 +24,10 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public Agent save(Agent agent){
         return agentrepos.save(agent);
+    }
+
+    @Override
+    public Agent findAgentById(long agentcode) {
+       return agentrepos.findById(agentcode).orElseThrow(()->new EntityNotFoundException("Agent not found"));
     }
 }

@@ -8,4 +8,6 @@ public interface AgentService {
     List<Agent> findAllAgents();
 
     Agent save(Agent agent);
+
+    Agent findAgentById(long agentcode);
 }

@@ -2,6 +2,7 @@ package com.salesteam.demo.services;
 
 import com.salesteam.demo.models.Customer;
 import com.salesteam.demo.repositories.CustomersRepository;
+import com.salesteam.demo.views.OrderCounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> findCustomerByName(String custname) {
         List <Customer> list = custrepos.findByCustnameContainingIgnoringCase(custname);
+        return list;
+    }
+
+    @Override
+    public List<OrderCounts> findOrdersCount() {
+        List<OrderCounts> list = custrepos.findOrderCounts();
         return list;
     }
 }

@@ -3,6 +3,7 @@ package com.salesteam.demo.controllers;
 import com.salesteam.demo.models.Customer;
 import com.salesteam.demo.services.CustomerService;
 import com.salesteam.demo.services.CustomerServiceImpl;
+import com.salesteam.demo.views.OrderCounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,13 @@ public class CustomerController {
     public ResponseEntity<?> listAllOrders() {
         List<Customer> rtnList = customerService.findAllOrders();
         return new ResponseEntity<>(rtnList, HttpStatus.OK);
+    }
+
+    // customers/orders/count - get all customers and their order count
+    @GetMapping(value="/orders/count", produces = {"application/json"})
+    public ResponseEntity<?>listOrdersCount(){
+        List<OrderCounts> rtnList = customerService.findOrdersCount();
+        return new ResponseEntity<>(rtnList,HttpStatus.OK);
     }
 
     // customers/customer/{id} - Returns the customer and their orders with the given customer id
