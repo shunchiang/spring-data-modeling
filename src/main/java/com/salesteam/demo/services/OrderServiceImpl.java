@@ -4,6 +4,7 @@ import com.salesteam.demo.models.Order;
 import com.salesteam.demo.repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -14,6 +15,7 @@ public class OrderServiceImpl implements OrderService {
     OrdersRepository ordersrepos;
 
     @Override
+    @Transactional
     public Order save(Order order) {
         return ordersrepos.save(order);
     }

@@ -11,13 +11,13 @@ import java.util.Set;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
     private long ordnum;
     private double ordamount;
     private double advanceamount;
 
     @ManyToOne
     @JoinColumn(name="custcode", nullable=false)
+    @JsonIgnoreProperties(value="orders", allowSetters = true)
     private Customer customer;
 
     private String orderdescription;

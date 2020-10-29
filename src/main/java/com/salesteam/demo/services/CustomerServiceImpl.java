@@ -1,7 +1,11 @@
 package com.salesteam.demo.services;
 
 import com.salesteam.demo.models.Customer;
+import com.salesteam.demo.models.Order;
+import com.salesteam.demo.models.Payment;
 import com.salesteam.demo.repositories.CustomersRepository;
+import com.salesteam.demo.repositories.OrdersRepository;
+import com.salesteam.demo.repositories.PaymentRepository;
 import com.salesteam.demo.views.OrderCounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +19,50 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomersRepository custrepos;
+    @Autowired
+    PaymentRepository payrepos;
+    @Autowired
+    OrdersRepository ordersrepos;
+    @Transactional
     @Override
     public Customer save(Customer customer){
-        return custrepos.save(customer);
+        Customer newCustomer = new Customer();
+
+        if(newCustomer.getCustcode()!=0){
+            custrepos.findById(customer.getCustcode())
+                    .orElseThrow(()->new EntityNotFoundException("customer not found"));
+            newCustomer.setCustcode((customer.getCustcode()));
+        }
+
+        newCustomer.setCustcity(customer.getCustcity());
+        newCustomer.setCustcountry(customer.getCustcountry());
+        newCustomer.setCustname(customer.getCustname());
+        newCustomer.setGrade(customer.getGrade());
+        newCustomer.setOpeningamt(customer.getOpeningamt());
+        newCustomer.setOutstandingamt(customer.getOutstandingamt());
+        newCustomer.setPaymentamt(customer.getPaymentamt());
+        newCustomer.setPhone(customer.getPhone());
+        newCustomer.setReceiveamt(customer.getReceiveamt());
+        newCustomer.setWorkingarea(customer.getWorkingarea());
+        newCustomer.setAgent(customer.getAgent());
+
+        newCustomer.getOrders().clear();
+        for (Order o : customer.getOrders())
+        {
+            Order newOrder = new Order(o.getOrdamount(), o.getAdvanceamount(), newCustomer, o.getOrderdescription());
+
+
+            for(Payment p : o.getPayments())
+            {
+                Payment newPayment = payrepos.findById(p.getPaymentid())
+                        .orElseThrow(() -> new EntityNotFoundException("Payment " + p.getPaymentid() + " not found!"));
+
+                newOrder.getPayments().add(newPayment);
+            }
+
+            newCustomer.getOrders().add(newOrder);
+        }
+        return custrepos.save(newCustomer);
     }
 
     @Override
@@ -42,5 +87,14 @@ public class CustomerServiceImpl implements CustomerService {
     public List<OrderCounts> findOrdersCount() {
         List<OrderCounts> list = custrepos.findOrderCounts();
         return list;
+    }
+    @Transactional
+    @Override
+    public void deleteCustomer(long customerid) {
+        if(custrepos.findById(customerid).isPresent()){
+            custrepos.deleteById(customerid);
+        }else{
+            throw new EntityNotFoundException("Customer with that id not found");
+        }
     }
 }
