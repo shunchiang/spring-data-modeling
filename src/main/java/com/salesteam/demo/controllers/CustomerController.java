@@ -65,6 +65,24 @@ public class CustomerController {
         return new ResponseEntity<>(newCustomer,responseHeaders, HttpStatus.CREATED);
     }
 
+    //  PUT /customers/customer/{custcode} - completely replaces the customer record including associated orders with the provided data
+    @PutMapping(value="customer/{custcode}",consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> updateCustomer(@PathVariable long custcode, @Valid @RequestBody Customer updateCustomer){
+        updateCustomer.setCustcode(custcode);
+        updateCustomer = customerService.save(updateCustomer);
+
+        return new ResponseEntity<>(updateCustomer,HttpStatus.OK);
+    }
+
+    //  PATCH /customers/customer/{custcode} - updates customers with the new data. Only the new data is to be sent from the frontend client.
+    @PatchMapping(value="/customer/{custcode}", consumes = "application/json", produces = "application/json" )
+    public ResponseEntity<?> patchCustomer(@PathVariable long custcode,@RequestBody Customer updateCustomer){
+        updateCustomer = customerService.update(updateCustomer,custcode);
+        return new ResponseEntity<>(updateCustomer,HttpStatus.OK);
+    }
+
+
+
     // DELETE /customers/customer/{custcode} - Deletes the given customer including any associated orders
     @DeleteMapping(value="customer/{customerid}")
     public ResponseEntity<?> deleteCustomerById(@PathVariable long customerid){

@@ -20,6 +20,7 @@ public class Customer {
     private String workingarea;
     private String custcountry;
     private String grade;
+
     private double openingamt;
     private double receiveamt;
     private double paymentamt;
@@ -101,36 +102,50 @@ public class Customer {
         this.grade = grade;
     }
 
+    @Transient
+    @JsonIgnoreProperties(value="hasvalueforopening")
+    public boolean hasvalueforopening = false;
     public double getOpeningamt() {
         return openingamt;
     }
 
     public void setOpeningamt(double openingamt) {
         this.openingamt = openingamt;
+        hasvalueforopening = true;
     }
 
+    @Transient
+    @JsonIgnoreProperties(value="hasvalueforreceive")
+    public boolean hasvalueforreceive = false;
     public double getReceiveamt() {
         return receiveamt;
     }
 
     public void setReceiveamt(double receiveamt) {
         this.receiveamt = receiveamt;
+        hasvalueforreceive = true;
     }
 
-    public double getPaymentamt() {
-        return paymentamt;
-    }
+    @Transient
+    @JsonIgnoreProperties(value="hasvalueforpayment")
+    public boolean hasvalueforpayment = false;
+    public double getPaymentamt() { return paymentamt; }
 
     public void setPaymentamt(double paymentamt) {
         this.paymentamt = paymentamt;
+        hasvalueforpayment = true;
     }
 
+    @Transient
+    @JsonIgnoreProperties(value="hasoutstanding")
+    public boolean hasoutstanding = false;
     public double getOutstandingamt() {
         return outstandingamt;
     }
 
     public void setOutstandingamt(double outstandingamt) {
         this.outstandingamt = outstandingamt;
+        hasoutstanding = true;
     }
 
     public String getPhone() {

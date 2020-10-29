@@ -65,6 +65,67 @@ public class CustomerServiceImpl implements CustomerService {
         return custrepos.save(newCustomer);
     }
 
+    @Transactional
+    @Override
+    public Customer update(Customer updateCustomer, long custcode) {
+        Customer newUpdateCustomer = findCustomerById(custcode);
+
+        if (updateCustomer.getCustname() != null){
+            newUpdateCustomer.setCustname(updateCustomer.getCustname());
+        }
+        if (updateCustomer.getCustcity()!=null){
+            newUpdateCustomer.setCustcity(updateCustomer.getCustcity());
+        }
+        if (updateCustomer.getCustcountry()!=null){
+        newUpdateCustomer.setCustcountry(updateCustomer.getCustcountry());
+        }
+        if(updateCustomer.getGrade()!=null){
+        newUpdateCustomer.setGrade(updateCustomer.getGrade());
+        }
+        if(updateCustomer.hasvalueforopening){
+        newUpdateCustomer.setOpeningamt(updateCustomer.getOpeningamt());
+        }
+        if(updateCustomer.hasoutstanding){
+        newUpdateCustomer.setOutstandingamt(updateCustomer.getOutstandingamt());
+        }
+        if(updateCustomer.hasvalueforpayment){
+        newUpdateCustomer.setPaymentamt(updateCustomer.getPaymentamt());
+        }
+        if(updateCustomer.getPhone()!=null){
+        newUpdateCustomer.setPhone(updateCustomer.getPhone());
+        }
+        if(updateCustomer.hasvalueforreceive){
+        newUpdateCustomer.setReceiveamt(updateCustomer.getReceiveamt());
+        }
+        if(updateCustomer.getWorkingarea()!=null){
+        newUpdateCustomer.setWorkingarea(updateCustomer.getWorkingarea());
+        }
+        if(updateCustomer.getAgent()!=null){
+        newUpdateCustomer.setAgent(updateCustomer.getAgent());
+        }
+
+        if (updateCustomer.getOrders().size()>0){
+            newUpdateCustomer.getOrders().clear();
+
+            for (Order o : updateCustomer.getOrders())
+        {
+            Order newOrder = new Order(o.getOrdamount(), o.getAdvanceamount(), newUpdateCustomer, o.getOrderdescription());
+
+
+            for(Payment p : o.getPayments())
+            {
+                Payment newPayment = payrepos.findById(p.getPaymentid())
+                        .orElseThrow(() -> new EntityNotFoundException("Payment " + p.getPaymentid() + " not found!"));
+
+                newOrder.getPayments().add(newPayment);
+            }
+
+            newUpdateCustomer.getOrders().add(newOrder);
+        }
+        }
+        return custrepos.save(newUpdateCustomer);
+    }
+
     @Override
     public List<Customer> findAllOrders() {
         List<Customer> list = new ArrayList<>();
