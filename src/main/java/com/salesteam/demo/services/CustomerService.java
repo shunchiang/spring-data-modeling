@@ -20,4 +20,6 @@ public interface CustomerService {
     void deleteCustomer(long customerid);
 
     Customer update(Customer updateCustomer, long custcode);
+
+    List<Customer> findAllCustomers();
 }

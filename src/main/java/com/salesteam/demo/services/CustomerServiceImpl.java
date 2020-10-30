@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer save(Customer customer){
         Customer newCustomer = new Customer();
 
-        if(newCustomer.getCustcode()!=0){
+        if(customer.getCustcode()!=0){
             custrepos.findById(customer.getCustcode())
                     .orElseThrow(()->new EntityNotFoundException("customer not found"));
             newCustomer.setCustcode((customer.getCustcode()));
@@ -131,6 +131,13 @@ public class CustomerServiceImpl implements CustomerService {
         List<Customer> list = new ArrayList<>();
         custrepos.findAll().iterator().forEachRemaining(list::add);
         return list;
+    }
+
+    @Override
+    public List<Customer> findAllCustomers() {
+        List<Customer> list = new ArrayList<>();
+         custrepos.findAll().iterator().forEachRemaining(list::add);
+         return list;
     }
 
     @Override

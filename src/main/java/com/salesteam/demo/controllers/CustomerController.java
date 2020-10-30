@@ -36,6 +36,12 @@ public class CustomerController {
         return new ResponseEntity<>(rtnList,HttpStatus.OK);
     }
 
+    @GetMapping(value="/all", produces = {"application/json"})
+    public ResponseEntity<?> findAllCustomers(){
+        List<Customer> rtnList = customerService.findAllCustomers();
+        return new ResponseEntity<>(rtnList,HttpStatus.OK);
+    }
+
     // customers/customer/{id} - Returns the customer and their orders with the given customer id
     @GetMapping(value = "/customer/{customerid}", produces = {"application/json"})
     public ResponseEntity<?> findCustomerById(@PathVariable long customerid) {
