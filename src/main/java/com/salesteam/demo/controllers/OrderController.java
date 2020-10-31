@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.salesteam.demo.models.Order;
 import com.salesteam.demo.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,6 +39,21 @@ public class OrderController {
     public ResponseEntity<?> findByAdvanceAmt(@PathVariable double amount){
         List<Order> rtnList = orderService.findByAdvanceAmt(amount);
         return new ResponseEntity<>(rtnList,HttpStatus.OK);
+    }
+
+    //  POST /orders/order - adds a new order to an existing customer
+    @PostMapping(value="/order",consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<?> addNewOrder(@Valid @RequestBody Order newOrder){
+        newOrder.setOrdnum(0);
+        newOrder = orderService.save(newOrder);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newCustomerURI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/"+ newOrder.getOrdnum())
+                .buildAndExpand(newOrder.getOrdnum())
+                .toUri();
+        responseHeaders.setLocation(newCustomerURI);
+        return new ResponseEntity<>(newOrder, responseHeaders, HttpStatus.OK);
     }
 
     // DELETE /orders/order/{ordername} - deletes the given order
