@@ -10,4 +10,8 @@ public interface OrderService {
     Order findOrderById(long ordnum);
 
     List<Order> findByAdvanceAmt(double amount);
+
+    List<Order> findAllOrders();
+
+    void deleteByNumber(long id);
 }
